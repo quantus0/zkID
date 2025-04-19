@@ -1,0 +1,12 @@
+{
+    "name": "zkid-contracts",
+    "version": "1.0.0",
+    "scripts": {
+        "build": "tsc",
+        "deploy": "ts-node src/zkIDVerifier.ts"
+    },
+    "dependencies": {
+        "axios": "^1.6.0",
+        "@midnight-network/sdk": "latest" // Replace with actual version
+    }
+}
