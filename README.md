@@ -20,7 +20,7 @@ Midnight proof server (Docker)
 Setup
 
 Clone the repository:
-git clone https://github.com/quantus0/zkID-Midnight.git
+git clone https://github.com/quantus0/zkID.git
 cd zkID-Midnight
 
 
