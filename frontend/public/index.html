@@ -1,13 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#000000" />
-    <title>zkID</title>
-  </head>
-  <body>
-    <noscript> JS </noscript>
-    <div id="root"></div>
-  </body>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>zkID: Age Verification</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-6">
+  <main class="bg-gray-800 p-10 rounded-3xl shadow-2xl max-w-lg w-full text-center">
+    <h1 class="text-4xl font-extrabold text-white mb-3">zkID: Age Verification</h1>
+    <p class="text-gray-400 mb-6 max-w-md mx-auto">
+      Prove your age without revealing your identity using zero-knowledge proofs.
+    </p>
+    <div class="flex gap-3 mb-6 justify-center">
+      <input
+        type="number"
+        placeholder="Enter your age"
+        id="ageInput"
+        class="flex-grow p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <button
+        id="verifyBtn"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 rounded-lg transition"
+      >
+        Generate & Verify
+      </button>
+    </div>
+    <pre
+      id="resultOutput"
+      class="bg-gray-700 text-left text-sm p-5 rounded-lg max-h-96 overflow-y-auto text-gray-300 hidden"
+    ></pre>
+  </main>
+
+  <script>
+    const btn = document.getElementById('verifyBtn');
+    const ageInput = document.getElementById('ageInput');
+    const resultOutput = document.getElementById('resultOutput');
+
+    btn.addEventListener('click', async () => {
+      const age = parseInt(ageInput.value);
+      if (isNaN(age)) {
+        alert('Please enter a valid age');
+        return;
+      }
+
+      resultOutput.textContent = 'Loading...';
+      resultOutput.classList.remove('hidden');
+
+      try {
+        const response = await fetch('http://localhost:3000/generate-proof', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ age }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        resultOutput.textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        resultOutput.textContent = 'Error: ' + error.message;
+      }
+    });
+  </script>
+</body>
 </html>
